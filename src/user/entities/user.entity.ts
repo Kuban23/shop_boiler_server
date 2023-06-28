@@ -5,6 +5,7 @@ import { IsEmail } from 'class-validator';
 
 @Entity('users')
 export class UserEntity {
+  [x: string]: any;
   @PrimaryGeneratedColumn()
   id: number;
 
