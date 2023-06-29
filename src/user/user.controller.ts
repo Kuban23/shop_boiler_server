@@ -6,10 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
+  UseGuards,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
+
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LocalAuthGuard } from 'src/auth/local.auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -18,6 +24,14 @@ export class UserController {
   @Post('/signup')
   create(@Body() dto: CreateUserDto) {
     return this.userService.create(dto);
+  }
+
+  // метод- при логине из куков получали сессию
+  @Post('/login')
+  @UseGuards(LocalAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  login(@Request() req) {
+    return { user: req.user, msg: 'Logged in' };
   }
 
   @Get()
