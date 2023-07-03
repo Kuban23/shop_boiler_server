@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Header,
   HttpCode,
   HttpStatus,
@@ -11,6 +12,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LocalAuthGuard } from '../auth/local.auth.guard';
+import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 
 @Controller('users')
 export class UsersController {
@@ -28,5 +30,12 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   login(@Request() req) {
     return { user: req.user, message: 'Вы удачно вошли в систему' };
+  }
+  //чекаю пользователя, залогинен он или нет, есои нет, то он не зайдет на страницы которые требуют авторизации
+  @Get('/login-check')
+  @UseGuards(AuthenticatedGuard)
+  loginCheck(@Request() req) {
+    // если залогинен, то возвращаю ответ
+    return req.user;
   }
 }
