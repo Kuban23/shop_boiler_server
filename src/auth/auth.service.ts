@@ -1,17 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-
-import { UserService } from '../user/user.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   //Метод для валидации пользователя,сессия для авторзации
   // получаю UsersService чтобы вытащить findOne
-  constructor(private readonly usersService: UserService) {}
+  constructor(private readonly usersService: UsersService) {}
   // проверяю есть ли пользователь с таким именем и верный ли пароль
-  async validateUser(fullName: string, password: string) {
+  async validateUser(username: string, password: string) {
     // ищу пользователя
-    const user = await this.usersService.findOne({ where: { fullName } });
+    const user = await this.usersService.findOne({ where: { username } });
     // проверка на пользователя
     if (!user) {
       throw new UnauthorizedException('Неверные учетные данные');
@@ -24,15 +23,15 @@ export class AuthService {
     if (!passwordValid) {
       throw new UnauthorizedException('Не верный логин или пароль');
     }
-
     // если валидация прошла, возваращаю данные, эти данный я возьму для отображения в Header
     if (user && passwordValid) {
       return {
         userId: user.id,
-        fullName: user.fullName,
+        username: user.username,
         email: user.email,
       };
     }
+
     return null;
   }
 }
