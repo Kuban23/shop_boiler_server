@@ -38,4 +38,10 @@ export class UsersController {
     // если залогинен, то возвращаю ответ
     return req.user;
   }
+
+  @Get('/logout')
+  logout(@Request() req) {
+    req.session.destroy();
+    return { message: 'Вы вышли из системы' };
+  }
 }
