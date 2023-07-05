@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 
 import { BoilerPartsService } from './boiler_parts.service';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
@@ -12,5 +12,12 @@ export class BoilerPartsController {
   @UseGuards(AuthenticatedGuard)
   paginateAndFilter(@Query() query) {
     return this.boilerPartsService.paginateAndFilter(query);
+  }
+
+  //получаю один продукт
+  @UseGuards(AuthenticatedGuard)
+  @Get('find/:id')
+  getOne(@Param('id') id: string) {
+    return this.boilerPartsService.findOne(id);
   }
 }
