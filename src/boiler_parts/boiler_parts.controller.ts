@@ -14,10 +14,24 @@ export class BoilerPartsController {
     return this.boilerPartsService.paginateAndFilter(query);
   }
 
-  //получаю один продукт
+  //получаю один продукт по id
   @UseGuards(AuthenticatedGuard)
   @Get('find/:id')
   getOne(@Param('id') id: string) {
     return this.boilerPartsService.findOne(id);
+  }
+
+  // получаю бестцеллеры
+  @UseGuards(AuthenticatedGuard)
+  @Get('bestsellers')
+  getBestseller() {
+    return this.boilerPartsService.bestsellers();
+  }
+
+  // получаю новые товары
+  @UseGuards(AuthenticatedGuard)
+  @Get('new')
+  getNew() {
+    return this.boilerPartsService.new();
   }
 }
