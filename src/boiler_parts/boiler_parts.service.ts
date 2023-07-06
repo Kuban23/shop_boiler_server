@@ -52,7 +52,7 @@ export class BoilerPartsService {
     });
   }
 
-  // получаю список товаров подходящих по определенной строчке
+  // получаю список товаров подходящих по определенной строчке, поиск по букве в имени товара
   async searchByString(
     str: string,
   ): Promise<{ count: number; rows: BoilerParts[] }> {
