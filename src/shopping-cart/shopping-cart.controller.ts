@@ -8,15 +8,25 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+
 import { ShoppingCartService } from './shopping-cart.service';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { AddToCartDto } from './dto/add-to-cart.dto';
+import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
+import {
+  GetAllResponse,
+  TotalPriceRequest,
+  TotalPriceResponse,
+  UpdateCountRequest,
+  UpdateCountResponse,
+} from './types';
 
 @Controller('shopping-cart')
 export class ShoppingCartController {
   constructor(private readonly shoppingCartService: ShoppingCartService) {}
 
   // получаю все элементы в корзине по userId
+  @ApiOkResponse({ type: [GetAllResponse] })
   @UseGuards(AuthenticatedGuard)
   @Get(':id')
   getAll(@Param('id') userId: string) {
@@ -31,6 +41,8 @@ export class ShoppingCartController {
   }
 
   // изменяю поле count
+  @ApiOkResponse({ type: UpdateCountResponse })
+  @ApiBody({ type: UpdateCountRequest })
   @UseGuards(AuthenticatedGuard)
   @Patch('/count/:id')
   updateCount(
@@ -41,6 +53,8 @@ export class ShoppingCartController {
   }
 
   //обнавляю тотал-прайс
+  @ApiOkResponse({ type: TotalPriceResponse })
+  @ApiBody({ type: TotalPriceRequest })
   @UseGuards(AuthenticatedGuard)
   @Patch('/total-price/:id')
   updateTotalPrice(
