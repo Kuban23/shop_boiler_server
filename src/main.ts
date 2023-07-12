@@ -17,6 +17,10 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
+  app.enableCors({
+    credentials: true,
+    origin: ['http://localhost:3001'],
+  });
   //делаю инициализацию сваггера
   const config = new DocumentBuilder()
     .setTitle('Магазин boiler_shop')
